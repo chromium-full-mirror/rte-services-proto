@@ -16,8 +16,13 @@ message ProvisionRequest {
 }
 message ProvisionResponse {
   enum Status {
-    Invalid = 0;
-    OK = 1;
+    STATUS_INVALID = 0;
+    STATUS_OK = 1;
+    STATUS_FAIL_DUT_ALREADY_BAD = 2;
+    STATUS_FAIL_DOWNLOAD_IMAGE = 3;
+    STATUS_FAIL_TRANSFER_IMAGE = 4;
+    STATUS_FAIL_WRITE_PARTITIONS = 5;
+    STATUS_FAIL_DUT_GONE_AFTER_REBOOT = 6;
   }
   Status status = 1;
 }
