@@ -10,5 +10,14 @@ service RTE {
   rpc Provision(ProvisionRequest) returns (ProvisionResponse);
 }
 
-message ProvisionRequest {}
-message ProvisionResponse {}
+message ProvisionRequest {
+  string dut_hostname = 1;
+  string image_name = 2;
+}
+message ProvisionResponse {
+  enum Status {
+    Invalid = 0;
+    OK = 1;
+  }
+  Status status = 1;
+}
