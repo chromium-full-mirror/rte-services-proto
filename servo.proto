@@ -6,7 +6,30 @@ syntax = "proto3";
 
 package rte;
 
-service Servo {
-  // rpc EnableRecoveryMode(EnableRecoveryModeRequest) returns (EnableRecoveryModeResponse);
-  // rpc DisableRecoveryMode(DisableRecoveryModeRequest) returns (DisableRecoveryModeResponse);
+service Servo {}
+
+service RPM {
+  rpc SetRpm(SetRpmRequest) returns (SetRpmResponse);
 }
+
+message SetRpmRequest {
+  enum State {
+    STATE_UNKNOWN = 0;
+    STATE_ON = 1;
+    STATE_OFF = 2;
+    STATE_CYCLE = 3;
+  }
+  State state = 1;
+}
+message SetRpmResponse {
+  enum Status {
+    STATUS_UNKNOWN = 0;
+    STATUS_OK = 1;
+    STATUS_UNSUPPORTED = 2;
+    STATUS_TIMEOUT = 3;
+  }
+  Status status = 1;
+  string explanation = 2;
+}
+
+service Chameleon {}
