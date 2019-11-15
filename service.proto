@@ -7,12 +7,29 @@ syntax = "proto3";
 package rte;
 
 service RTE {
+  rpc Repair(RepairRequest) returns (RepairResponse);
   rpc Provision(ProvisionRequest) returns (ProvisionResponse);
+  // Runs a shell command with the default shell.
+  // Does not spawn a tty.
+  rpc DutShell(DutShellRequest) returns (stream DutShellResponse);
+  // XXX RPM
+  // XXX Device/lab config
+}
+
+message RepairRequest {}
+message RepairResponse {
+  enum Status {
+    STATUS_INVALID = 0;
+    STATUS_OK = 1;
+    STATUS_REPAIRED = 2;
+    STATUS_FAILED = 3;
+  }
+  Status status = 1;
+  string explanation = 2;
 }
 
 message ProvisionRequest {
-  string dut_hostname = 1;
-  string image_name = 2;
+  string image_name = 1;
 }
 message ProvisionResponse {
   enum Status {
@@ -25,4 +42,17 @@ message ProvisionResponse {
     STATUS_FAIL_DUT_GONE_AFTER_REBOOT = 6;
   }
   Status status = 1;
+  string explanation = 2;
+}
+
+message DutShellRequest {
+  string command = 1;
+}
+message DutShellResponse {
+  int32 status = 1;
+  // exited will be true for the last response in stream.
+  // status will be set.
+  // No more output follows.
+  bool exited = 2;
+  bytes output = 3;
 }
